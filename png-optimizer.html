@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online PNG optimizer tool. Compress PNG images without losing quality. Reduce file size for faster websites and better performance.">
+    <meta name="keywords" content="PNG optimizer, PNG compression, image compression, reduce PNG size, online image tool">
+    <meta name="author" content="PNG Optimizer Pro">
+    <title>PNG Optimizer Pro - Compress PNG Images Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary-color: #06d6a0;
+            --accent-color: #ef476f;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-light: #e2e8f0;
+            --gray-medium: #94a3b8;
+            --gray-dark: #475569;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-radius: 10px;
+            --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+        }
+
+        nav a {
+            color: var(--gray-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0 3rem;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray-dark);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tool-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .tool-header h3 {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .compression-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.5rem 1rem;
+            background-color: var(--light-color);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 3.5rem 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            background-color: #fafbfe;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--primary-color);
+            background-color: #f0f4ff;
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .upload-area p {
+            color: var(--gray-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px -1px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #0da271);
+        }
+
+        .controls {
+            margin: 2.5rem 0;
+        }
+
+        .control-group {
+            margin-bottom: 2rem;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .control-value {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, var(--success-color), var(--warning-color), var(--danger-color));
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--gray-medium);
+        }
+
+        .preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .preview-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .preview-box {
+            border: 1px solid var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 1.8rem;
+            text-align: center;
+            background-color: #fcfdff;
+        }
+
+        .preview-box h4 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            font-size: 1.2rem;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 280px;
+            margin: 0 auto;
+            display: block;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-info {
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--gray-medium);
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .savings {
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .ad-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .ad-container h3 {
+            color: var(--gray-dark);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ad-placeholder {
+            background-color: #f8fafc;
+            border: 2px dashed var(--gray-light);
+            border-radius: var(--border-radius);
+            padding: 2.5rem 1rem;
+            color: var(--gray-medium);
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .ad-code {
+            font-size: 0.8rem;
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: left;
+            overflow-x: auto;
+            margin-top: 1rem;
+            color: var(--gray-dark);
+        }
+
+        .features {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.8rem;
+        }
+
+        .features h3 {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .features ul {
+            list-style: none;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .features i {
+            color: var(--success-color);
+            font-size: 1.1rem;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 4rem 0 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-column h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f0f4ff, #f8fafc);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--gray-light);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav ul li {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .tool-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <h1>PNG Optimizer Pro</h1>
+                </div>
+                <button class="mobile-menu-btn" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul id="nav-menu">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h2>Optimize PNG Images Without Losing Quality</h2>
+            <p>Reduce PNG file sizes by up to 80% with our advanced compression algorithm. Perfect for websites, apps, and digital content.</p>
+            <a href="#tool" class="btn">
+                <i class="fas fa-bolt"></i>
+                Start Optimizing Now
+            </a>
+        </section>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value">80%</div>
+                <div class="stat-label">Average Size Reduction</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">50K+</div>
+                <div class="stat-label">Images Optimized</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">Quality Preserved</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="content">
+                <div class="tool-container" id="tool">
+                    <div class="tool-header">
+                        <h3>PNG Optimization Tool</h3>
+                        <div class="compression-badge">
+                            <i class="fas fa-compress-alt"></i>
+                            <span id="compression-label">High Quality</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-file-upload upload-icon"></i>
+                        <h4>Upload Your PNG Image</h4>
+                        <p>Drag & drop your PNG file here or click to browse</p>
+                        <p>Maximum file size: 10MB</p>
+                        <input type="file" id="file-input" accept=".png,image/png" class="hidden">
+                        <button class="btn" id="upload-btn">
+                            <i class="fas fa-folder-open"></i>
+                            Select PNG File
+                        </button>
+                    </div>
+
+                    <div class="controls">
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="compression">Compression Level</label>
+                                <span class="control-value" id="compression-value">80%</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="1" max="100" value="80" class="slider" id="compression-slider">
+                                <div class="slider-labels">
+                                    <span>Small File</span>
+                                    <span>Balanced</span>
+                                    <span>Best Quality</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="width">Resize Image (Optional)</label>
+                                <span class="control-value" id="dimensions-value">Original Size</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="10" max="100" value="100" class="slider" id="resize-slider">
+                                <div class="slider-labels">
+                                    <span>10%</span>
+                                    <span>50%</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" id="process-btn">
+                        <i class="fas fa-magic"></i>
+                        Optimize PNG
+                    </button>
+
+                    <div class="preview-container">
+                        <div class="preview-box">
+                            <h4>Original Image</h4>
+                            <img id="original-preview" class="image-preview" src="https://via.placeholder.com/600x400/4f46e5/ffffff?text=Original+PNG" alt="Original PNG preview">
+                            <div class="file-info">
+                                <div class="info-item">
+                                    <span class="info-label">Dimensions</span>
+                                    <span class="info-value" id="original-dimensions">600 x 400</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">File Size</span>
+                                    <span class="info-value" id="original-size">850 KB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="preview-box">
+                            <h4>Optimized Image</h4>
+                            <img id="optimized-preview" class="image-preview" src="https://via.placeholder.com/600x400/06d6a0/ffffff?text=Optimized+PNG" alt="Optimized PNG preview">
+                            <div class="file-info">
+                                <div class="info-item">
+                                    <span class="info-label">Dimensions</span>
+                                    <span class="info-value" id="optimized-dimensions">600 x 400</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">File Size</span>
+                                    <span class="info-value" id="optimized-size">220 KB</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Savings</span>
+                                    <span class="info-value savings" id="savings-value">74%</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline" id="download-btn">
+                                <i class="fas fa-download"></i>
+                                Download Optimized PNG
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ad-container">
+                    <h3>Advertisement</h3>
+                    <div class="ad-placeholder">
+                        <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>AdSense Ad Unit</p>
+                        <p>300 x 250</p>
+                    </div>
+                    <div class="ad-code">
+                        <!-- Example AdSense code (replace with your own) -->
+                        <!-- 
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+                             crossorigin="anonymous"></script>
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                        -->
+                        <p>Insert your AdSense code here</p>
+                    </div>
+                </div>
+
+                <div class="ad-container">
+                    <h3>Advertisement</h3>
+                    <div class="ad-placeholder">
+                        <i class="fas fa-ad" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>AdSense Ad Unit</p>
+                        <p>300 x 600</p>
+                    </div>
+                    <div class="ad-code">
+                        <p>Insert your AdSense code here</p>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <h3>Why Optimize PNGs?</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Faster website loading times</li>
+                        <li><i class="fas fa-check-circle"></i> Reduced bandwidth usage</li>
+                        <li><i class="fas fa-check-circle"></i> Improved SEO performance</li>
+                        <li><i class="fas fa-check-circle"></i> Better user experience</li>
+                        <li><i class="fas fa-check-circle"></i> Maintain image quality</li>
+                        <li><i class="fas fa-check-circle"></i> Support for transparency</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>PNG Optimizer Pro</h4>
+                    <p>The ultimate online tool for optimizing PNG images without quality loss. Perfect for web developers, designers, and content creators.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 PNG Optimizer Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileInput = document.getElementById('file-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            const uploadArea = document.getElementById('upload-area');
+            const compressionSlider = document.getElementById('compression-slider');
+            const resizeSlider = document.getElementById('resize-slider');
+            const processBtn = document.getElementById('process-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const navMenu = document.getElementById('nav-menu');
+            
+            const compressionValue = document.getElementById('compression-value');
+            const compressionLabel = document.getElementById('compression-label');
+            const dimensionsValue = document.getElementById('dimensions-value');
+            
+            const originalPreview = document.getElementById('original-preview');
+            const optimizedPreview = document.getElementById('optimized-preview');
+            const originalDimensions = document.getElementById('original-dimensions');
+            const optimizedDimensions = document.getElementById('optimized-dimensions');
+            const originalSize = document.getElementById('original-size');
+            const optimizedSize = document.getElementById('optimized-size');
+            const savingsValue = document.getElementById('savings-value');
+
+            // Event Listeners
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            compressionSlider.addEventListener('input', updateCompressionValue);
+            resizeSlider.addEventListener('input', updateResizeValue);
+            
+            processBtn.addEventListener('click', processImage);
+            downloadBtn.addEventListener('click', downloadImage);
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+            // Initialize values
+            updateCompressionValue();
+            updateResizeValue();
+
+            // Functions
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('dragover');
+            }
+
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('dragover');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleImageFile(e.dataTransfer.files[0]);
+                }
+            }
+
+            function handleFileSelect(e) {
+                if (e.target.files && e.target.files[0]) {
+                    handleImageFile(e.target.files[0]);
+                }
+            }
+
+            function handleImageFile(file) {
+                // Check if file is a PNG
+                if (!file.type.match('image/png') && !file.name.toLowerCase().endsWith('.png')) {
+                    alert('Please select a PNG image file.');
+                    return;
+                }
+                
+                // Check file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File size exceeds 10MB limit.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    originalPreview.src = e.target.result;
+                    optimizedPreview.src = e.target.result;
+                    
+                    // Get image dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                        originalDimensions.textContent = `${img.width} x ${img.height}`;
+                        optimizedDimensions.textContent = `${img.width} x ${img.height}`;
+                        
+                        // Update file size
+                        originalSize.textContent = formatFileSize(file.size);
+                        
+                        // Calculate optimized file size (simulated)
+                        const compressionRatio = compressionSlider.value / 100;
+                        const resizeRatio = resizeSlider.value / 100;
+                        const optimizedFileSize = file.size * compressionRatio * resizeRatio;
+                        
+                        optimizedSize.textContent = formatFileSize(optimizedFileSize);
+                        
+                        // Calculate savings
+                        const savings = ((file.size - optimizedFileSize) / file.size * 100).toFixed(0);
+                        savingsValue.textContent = `${savings}%`;
+                    };
+                    img.src = e.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            function updateCompressionValue() {
+                const value = compressionSlider.value;
+                compressionValue.textContent = `${value}%`;
+                
+                // Update compression label
+                if (value >= 80) {
+                    compressionLabel.textContent = 'High Quality';
+                } else if (value >= 50) {
+                    compressionLabel.textContent = 'Balanced';
+                } else {
+                    compressionLabel.textContent = 'Maximum Compression';
+                }
+            }
+
+            function updateResizeValue() {
+                const value = resizeSlider.value;
+                if (value == 100) {
+                    dimensionsValue.textContent = 'Original Size';
+                } else {
+                    dimensionsValue.textContent = `${value}% of Original`;
+                }
+            }
+
+            function processImage() {
+                // In a real implementation, this would use a PNG compression library
+                // For this demo, we'll just simulate the process
+                
+                const compression = compressionSlider.value;
+                const resize = resizeSlider.value;
+                
+                // Update file size based on compression and resize
+                const originalSizeValue = parseFloat(originalSize.textContent);
+                const compressionRatio = compression / 100;
+                const resizeRatio = resize / 100;
+                const optimizedFileSize = originalSizeValue * compressionRatio * resizeRatio;
+                
+                optimizedSize.textContent = formatFileSize(optimizedFileSize * 1024); // Convert to bytes
+                
+                // Calculate savings
+                const savings = ((originalSizeValue * 1024 - optimizedFileSize * 1024) / (originalSizeValue * 1024) * 100).toFixed(0);
+                savingsValue.textContent = `${savings}%`;
+                
+                // Update the optimized preview (in a real app, this would be the actual optimized image)
+                optimizedPreview.src = `https://via.placeholder.com/600x400/06d6a0/ffffff?text=Optimized+PNG+${compression}%25`;
+                
+                // Show success message
+                alert(`PNG optimized successfully!\nCompression: ${compression}%\nResize: ${resize}%\nFile size reduced by ${savings}%`);
+            }
+
+            function downloadImage() {
+                // In a real implementation, this would download the actual optimized image
+                // For this demo, we'll just show an alert
+                alert('Download functionality would be implemented in a real application. This would download the optimized PNG image.');
+            }
+
+            function toggleMobileMenu() {
+                navMenu.classList.toggle('active');
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes < 1024) {
+                    return bytes + ' bytes';
+                } else if (bytes < 1048576) {
+                    return (bytes / 1024).toFixed(2) + ' KB';
+                } else {
+                    return (bytes / 1048576).toFixed(2) + ' MB';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
