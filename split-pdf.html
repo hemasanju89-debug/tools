@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split PDF Tool - Extract PDF Pages Online | ToolHub</title>
+    <meta name="description" content="Free online tool to split PDF files. Extract specific pages or ranges from PDF documents. Adjust compression settings and download individual pages.">
+    <meta name="keywords" content="split PDF, extract PDF pages, PDF splitter, online PDF tool, PDF compression">
+    <meta name="author" content="ToolHub">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8738644987718589"
+     crossorigin="anonymous"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #06b6d4;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .file-drop-area {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .file-drop-area.active {
+            border-color: var(--primary);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s ease;
+        }
+        
+        .ad-container {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+        }
+        
+        .page-thumbnail {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .page-thumbnail:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quality-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .quality-high {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .quality-medium {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+        
+        .quality-low {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .page-checkbox:checked + .page-label {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .split-option {
+            transition: all 0.3s ease;
+        }
+        
+        .split-option:hover {
+            background-color: #f0fdf4;
+            border-color: #10b981;
+        }
+        
+        .split-option.active {
+            background-color: #f0fdf4;
+            border-color: #10b981;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #1e293b;
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <i data-lucide="layers" class="w-8 h-8 text-emerald-500"></i>
+                <span class="text-2xl font-bold gradient-text">ToolHub</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="text-gray-600 hover:text-emerald-500 font-medium transition">Home</a>
+                <a href="#features" class="text-gray-600 hover:text-emerald-500 font-medium transition">Features</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-emerald-500 font-medium transition">How It Works</a>
+                <a href="#faq" class="text-gray-600 hover:text-emerald-500 font-medium transition">FAQ</a>
+            </nav>
+            <button class="md:hidden text-gray-600" id="mobileMenuBtn">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content -->
+            <div class="lg:w-2/3">
+                <!-- Tool Header -->
+                <div class="text-center mb-10">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Split PDF Tool</h1>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">Extract specific pages or ranges from your PDF documents. Create new PDF files with just the pages you need.</p>
+                </div>
+
+                <!-- Ad Unit - Top -->
+                <div class="mb-8">
+                    <div class="ad-container">
+                        <!-- AdSense Ad Unit -->
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">728 x 90</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Container -->
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <!-- File Upload Area -->
+                    <div id="uploadArea" class="file-drop-area border-2 border-dashed rounded-xl p-8 text-center cursor-pointer mb-6">
+                        <i data-lucide="upload" class="w-12 h-12 text-emerald-500 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Upload PDF File</h3>
+                        <p class="text-gray-600 mb-4">Drag & drop your PDF file here or click to browse</p>
+                        <p class="text-sm text-gray-500">Maximum file size: 10MB</p>
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf">
+                        <button id="uploadBtn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg mt-4 inline-flex items-center">
+                            <i data-lucide="folder-open" class="w-5 h-5 mr-2"></i>
+                            Select PDF File
+                        </button>
+                    </div>
+
+                    <!-- File Info -->
+                    <div id="fileInfo" class="hidden mb-6 p-4 bg-emerald-50 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i data-lucide="file-text" class="w-8 h-8 text-emerald-500 mr-3"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800" id="fileName">document.pdf</h4>
+                                    <p class="text-sm text-gray-600" id="fileSize">0 KB</p>
+                                </div>
+                            </div>
+                            <button id="changeFileBtn" class="text-emerald-600 hover:text-emerald-800 font-medium">
+                                Change File
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Split Options -->
+                    <div id="splitOptions" class="hidden mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">How do you want to split your PDF?</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="split-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer active" id="rangeOption">
+                                <div class="flex items-center mb-2">
+                                    <i data-lucide="sliders" class="w-5 h-5 text-emerald-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-800">Extract Page Range</h4>
+                                </div>
+                                <p class="text-sm text-gray-600">Select a specific range of pages to extract</p>
+                            </div>
+                            <div class="split-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer" id="individualOption">
+                                <div class="flex items-center mb-2">
+                                    <i data-lucide="file-check" class="w-5 h-5 text-emerald-500 mr-2"></i>
+                                    <h4 class="font-semibold text-gray-800">Extract Individual Pages</h4>
+                                </div>
+                                <p class="text-sm text-gray-600">Select specific pages to extract as separate files</p>
+                            </div>
+                        </div>
+
+                        <!-- Range Selection -->
+                        <div id="rangeSelection" class="mb-6">
+                            <h4 class="font-semibold text-gray-800 mb-3">Select Page Range</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="fromPage" class="block text-sm font-medium text-gray-700 mb-1">From Page</label>
+                                    <input type="number" id="fromPage" min="1" max="10" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label for="toPage" class="block text-sm font-medium text-gray-700 mb-1">To Page</label>
+                                    <input type="number" id="toPage" min="1" max="10" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Individual Page Selection -->
+                        <div id="individualSelection" class="mb-6 hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-semibold text-gray-800">Select Individual Pages</h4>
+                                <div class="flex space-x-2">
+                                    <button id="selectAllBtn" class="text-sm text-emerald-600 font-medium">Select All</button>
+                                    <button id="deselectAllBtn" class="text-sm text-gray-600 font-medium">Deselect All</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2" id="pagesContainer">
+                                <!-- Pages will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compression Settings -->
+                    <div id="compressionSettings" class="hidden mb-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-800">Compression Settings</h3>
+                            <span id="qualityLabel" class="quality-indicator quality-high">High Quality</span>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="compressionLevel" class="text-gray-700 font-medium">Quality Level</label>
+                                <span id="compressionValue" class="text-emerald-600 font-semibold">85%</span>
+                            </div>
+                            <input type="range" id="compressionLevel" min="30" max="100" value="85" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Smaller File</span>
+                                <span>Balanced</span>
+                                <span>Better Quality</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div id="progressSection" class="mb-6 hidden">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-700 font-medium">Splitting PDF</span>
+                            <span id="progressPercent" class="text-emerald-600 font-semibold">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="splitBtn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg flex-1 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <i data-lucide="scissors" class="w-5 h-5 mr-2"></i>
+                            Split PDF
+                        </button>
+                        <button id="downloadAllBtn" class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg flex-1 flex items-center justify-center hidden">
+                            <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+                            Download All
+                        </button>
+                        <button id="resetBtn" class="border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="bg-white rounded-xl shadow-md p-6 mb-8 hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Split PDF Files</h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-600" id="splitCount">0 files</span>
+                            <div class="tooltip">
+                                <i data-lucide="info" class="w-4 h-4 text-gray-500"></i>
+                                <span class="tooltiptext">Click on individual files to download them</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="filesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Split files will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <section id="features" class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Why Use Our PDF Splitter?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="zap" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Fast Processing</h3>
+                                <p class="text-gray-600">Split PDF files quickly with our optimized processing engine.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="lock" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Secure & Private</h3>
+                                <p class="text-gray-600">Your files are processed in your browser and never uploaded to any server.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="settings" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Flexible Options</h3>
+                                <p class="text-gray-600">Extract page ranges or individual pages with ease.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Works Everywhere</h3>
+                                <p class="text-gray-600">Use our tool on any device - desktop, tablet, or mobile.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works Section -->
+                <section id="how-it-works" class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">How to Split PDF Files</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">1</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Upload PDF</h3>
+                            <p class="text-gray-600">Select the PDF file you want to split from your device.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">2</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Choose Pages</h3>
+                            <p class="text-gray-600">Select page ranges or individual pages to extract.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">3</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Split & Download</h3>
+                            <p class="text-gray-600">Click split and download your new PDF files.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section id="faq" class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Is it free to split PDF files?</h3>
+                            <p class="text-gray-600">Yes, our PDF splitter is completely free to use with no hidden costs or limitations.</p>
+                        </div>
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Are my files secure?</h3>
+                            <p class="text-gray-600">Absolutely. All file processing happens directly in your browser. Your files never leave your computer and are not stored on our servers.</p>
+                        </div>
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">What is the maximum file size?</h3>
+                            <p class="text-gray-600">You can split PDF files up to 10MB. For larger files, consider compressing them first.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Can I extract multiple page ranges?</h3>
+                            <p class="text-gray-600">Yes, you can extract multiple page ranges or individual pages in one operation.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar with Ads -->
+            <div class="lg:w-1/3">
+                <!-- Ad Unit - Sidebar Top -->
+                <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+                    <div class="ad-container" style="min-height: 300px;">
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">300 x 250</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Tools -->
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">More PDF Tools</h3>
+                    <div class="space-y-4">
+                        <a href="/merge-pdf" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="merge" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">Merge PDF</span>
+                        </a>
+                        <a href="/pdf-to-image" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="image" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">PDF to Image</span>
+                        </a>
+                        <a href="/compress-pdf" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="minimize" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">Compress PDF</span>
+                        </a>
+                        <a href="/pdf-to-word" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="file-text" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">PDF to Word</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ad Unit - Sidebar Bottom -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <div class="ad-container" style="min-height: 600px;">
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">300 x 600</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="/" class="flex items-center space-x-2">
+                        <i data-lucide="layers" class="w-6 h-6 text-emerald-400"></i>
+                        <span class="text-xl font-bold text-white">ToolHub</span>
+                    </a>
+                    <p class="text-gray-400 mt-2">Your all-in-one solution for PDF and image tools</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">Terms</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 ToolHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Tool Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const changeFileBtn = document.getElementById('changeFileBtn');
+            const splitOptions = document.getElementById('splitOptions');
+            const rangeOption = document.getElementById('rangeOption');
+            const individualOption = document.getElementById('individualOption');
+            const rangeSelection = document.getElementById('rangeSelection');
+            const individualSelection = document.getElementById('individualSelection');
+            const fromPage = document.getElementById('fromPage');
+            const toPage = document.getElementById('toPage');
+            const pagesContainer = document.getElementById('pagesContainer');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            const deselectAllBtn = document.getElementById('deselectAllBtn');
+            const compressionSettings = document.getElementById('compressionSettings');
+            const compressionLevel = document.getElementById('compressionLevel');
+            const compressionValue = document.getElementById('compressionValue');
+            const qualityLabel = document.getElementById('qualityLabel');
+            const splitBtn = document.getElementById('splitBtn');
+            const downloadAllBtn = document.getElementById('downloadAllBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const resultsSection = document.getElementById('resultsSection');
+            const filesContainer = document.getElementById('filesContainer');
+            const splitCount = document.getElementById('splitCount');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            
+            // Store uploaded file and page data
+            let pdfFile = null;
+            let totalPages = 0;
+            let selectedPages = [];
+            let splitFiles = [];
+            let splitMode = 'range'; // 'range' or 'individual'
+            
+            // Event Listeners
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            changeFileBtn.addEventListener('click', () => fileInput.click());
+            
+            // Drag and drop event listeners
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // Split option selection
+            rangeOption.addEventListener('click', () => setSplitMode('range'));
+            individualOption.addEventListener('click', () => setSplitMode('individual'));
+            
+            // Page range inputs
+            fromPage.addEventListener('input', updatePageRange);
+            toPage.addEventListener('input', updatePageRange);
+            
+            // Page selection
+            selectAllBtn.addEventListener('click', selectAllPages);
+            deselectAllBtn.addEventListener('click', deselectAllPages);
+            
+            compressionLevel.addEventListener('input', updateCompressionValue);
+            splitBtn.addEventListener('click', splitPDF);
+            downloadAllBtn.addEventListener('click', downloadAllFiles);
+            resetBtn.addEventListener('click', resetTool);
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            
+            // Functions
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('active');
+            }
+            
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+                
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    const files = e.dataTransfer.files;
+                    if (files[0].type === 'application/pdf') {
+                        processFile(files[0]);
+                    } else {
+                        alert('Please select a PDF file.');
+                    }
+                }
+            }
+            
+            function handleFileSelect(e) {
+                if (e.target.files && e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (file.type === 'application/pdf') {
+                        processFile(file);
+                    } else {
+                        alert('Please select a PDF file.');
+                    }
+                }
+            }
+            
+            function processFile(file) {
+                // Check file size
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File exceeds the 10MB limit. Please select a smaller file.');
+                    return;
+                }
+                
+                pdfFile = file;
+                
+                // In a real application, you would use a PDF library to get page count
+                // For this demo, we'll simulate getting a random number of pages (5-12)
+                totalPages = Math.floor(Math.random() * 8) + 5;
+                selectedPages = Array.from({length: totalPages}, (_, i) => i + 1);
+                
+                // Update UI
+                updateFileInfo();
+                updatePageSelection();
+                updatePageRangeInputs();
+                splitBtn.disabled = false;
+                
+                // Show file info and split options
+                fileInfo.classList.remove('hidden');
+                splitOptions.classList.remove('hidden');
+                compressionSettings.classList.remove('hidden');
+                
+                // Hide upload area
+                uploadArea.classList.add('hidden');
+            }
+            
+            function updateFileInfo() {
+                fileName.textContent = pdfFile.name;
+                fileSize.textContent = formatFileSize(pdfFile.size);
+            }
+            
+            function updatePageRangeInputs() {
+                fromPage.max = totalPages;
+                toPage.max = totalPages;
+                toPage.value = totalPages;
+            }
+            
+            function updatePageRange() {
+                const from = parseInt(fromPage.value);
+                const to = parseInt(toPage.value);
+                
+                // Validate range
+                if (from > to) {
+                    fromPage.value = to;
+                }
+                
+                if (from < 1) {
+                    fromPage.value = 1;
+                }
+                
+                if (to > totalPages) {
+                    toPage.value = totalPages;
+                }
+            }
+            
+            function updatePageSelection() {
+                pagesContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageElement = document.createElement('div');
+                    pageElement.className = 'relative';
+                    pageElement.innerHTML = `
+                        <input type="checkbox" id="page-${i}" class="page-checkbox absolute opacity-0" checked>
+                        <label for="page-${i}" class="page-label block bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg cursor-pointer transition">
+                            Page ${i}
+                        </label>
+                    `;
+                    pagesContainer.appendChild(pageElement);
+                    
+                    // Add event listener
+                    const checkbox = pageElement.querySelector('input');
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            if (!selectedPages.includes(i)) selectedPages.push(i);
+                        } else {
+                            selectedPages = selectedPages.filter(page => page !== i);
+                        }
+                        updateSplitButtonState();
+                    });
+                }
+            }
+            
+            function setSplitMode(mode) {
+                splitMode = mode;
+                
+                // Update UI
+                if (mode === 'range') {
+                    rangeOption.classList.add('active');
+                    individualOption.classList.remove('active');
+                    rangeSelection.classList.remove('hidden');
+                    individualSelection.classList.add('hidden');
+                } else {
+                    rangeOption.classList.remove('active');
+                    individualOption.classList.add('active');
+                    rangeSelection.classList.add('hidden');
+                    individualSelection.classList.remove('hidden');
+                }
+            }
+            
+            function selectAllPages() {
+                selectedPages = Array.from({length: totalPages}, (_, i) => i + 1);
+                updatePageSelection();
+                updateSplitButtonState();
+            }
+            
+            function deselectAllPages() {
+                selectedPages = [];
+                updatePageSelection();
+                updateSplitButtonState();
+            }
+            
+            function updateSplitButtonState() {
+                if (splitMode === 'range') {
+                    const from = parseInt(fromPage.value);
+                    const to = parseInt(toPage.value);
+                    splitBtn.disabled = from > to || from < 1 || to > totalPages;
+                } else {
+                    splitBtn.disabled = selectedPages.length === 0;
+                }
+            }
+            
+            function updateCompressionValue() {
+                const value = parseInt(compressionLevel.value);
+                compressionValue.textContent = `${value}%`;
+                
+                // Update quality label
+                if (value >= 80) {
+                    qualityLabel.textContent = 'High Quality';
+                    qualityLabel.className = 'quality-indicator quality-high';
+                } else if (value >= 50) {
+                    qualityLabel.textContent = 'Medium Quality';
+                    qualityLabel.className = 'quality-indicator quality-medium';
+                } else {
+                    qualityLabel.textContent = 'Low Quality';
+                    qualityLabel.className = 'quality-indicator quality-low';
+                }
+            }
+            
+            function splitPDF() {
+                if (!pdfFile) {
+                    alert('Please select a PDF file to split.');
+                    return;
+                }
+                
+                // Show progress bar
+                progressSection.classList.remove('hidden');
+                
+                // Reset results
+                splitFiles = [];
+                filesContainer.innerHTML = '';
+                
+                // Disable split button during processing
+                splitBtn.disabled = true;
+                
+                // Determine which pages to split
+                let pagesToSplit = [];
+                if (splitMode === 'range') {
+                    const from = parseInt(fromPage.value);
+                    const to = parseInt(toPage.value);
+                    pagesToSplit = Array.from({length: to - from + 1}, (_, i) => from + i);
+                } else {
+                    pagesToSplit = [...selectedPages];
+                }
+                
+                // Simulate splitting (in a real app, this would use a PDF library)
+                let progress = 0;
+                const totalSteps = pagesToSplit.length;
+                let currentStep = 0;
+                
+                const interval = setInterval(() => {
+                    currentStep++;
+                    progress = Math.min(100, Math.round((currentStep / totalSteps) * 100));
+                    
+                    progressFill.style.width = `${progress}%`;
+                    progressPercent.textContent = `${progress}%`;
+                    
+                    // Simulate creating a file for each page or range
+                    if (currentStep <= totalSteps) {
+                        const pageNum = pagesToSplit[currentStep - 1];
+                        const quality = parseInt(compressionLevel.value) / 100;
+                        
+                        // In a real app, this would create the actual split PDF
+                        // For this demo, we'll create a placeholder
+                        const fileData = {
+                            name: splitMode === 'range' ? 
+                                  `pages-${fromPage.value}-${toPage.value}.pdf` : 
+                                  `page-${pageNum}.pdf`,
+                            pages: splitMode === 'range' ? 
+                                  `${fromPage.value}-${toPage.value}` : 
+                                  `${pageNum}`,
+                            size: Math.round((1 - quality) * 500 + 100) // Simulated file size based on quality
+                        };
+                        
+                        splitFiles.push(fileData);
+                        displayFile(fileData);
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show download all button
+                        downloadAllBtn.classList.remove('hidden');
+                        
+                        // Show results section
+                        resultsSection.classList.remove('hidden');
+                        
+                        // Update split count
+                        splitCount.textContent = `${splitFiles.length} file${splitFiles.length !== 1 ? 's' : ''}`;
+                        
+                        // Scroll to results
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Re-enable split button
+                        splitBtn.disabled = false;
+                    }
+                }, 300);
+            }
+            
+            function displayFile(fileData) {
+                const fileElement = document.createElement('div');
+                fileElement.className = 'bg-gray-50 rounded-lg overflow-hidden';
+                fileElement.innerHTML = `
+                    <div class="relative">
+                        <div class="page-thumbnail w-full h-48 bg-gradient-to-br from-emerald-100 to-cyan-100 flex items-center justify-center cursor-pointer" onclick="downloadSingleFile('${fileData.name}')">
+                            <div class="text-center">
+                                <i data-lucide="file-text" class="w-12 h-12 text-emerald-500 mx-auto mb-2"></i>
+                                <span class="text-emerald-800 font-bold text-lg">${fileData.name}</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                            Pages ${fileData.pages}
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">PDF</span>
+                            <span class="text-sm font-medium">${formatFileSize(fileData.size * 1024)}</span>
+                        </div>
+                        <button class="download-single-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium py-2 px-4 rounded flex items-center justify-center" onclick="downloadSingleFile('${fileData.name}')">
+                            <i data-lucide="download" class="w-4 h-4 mr-1"></i>
+                            Download
+                        </button>
+                    </div>
+                `;
+                filesContainer.appendChild(fileElement);
+                
+                // Reinitialize icons
+                lucide.createIcons();
+            }
+            
+            function downloadSingleFile(filename) {
+                // In a real application, this would download the actual split PDF
+                // For this demo, we'll simulate the download
+                
+                // Create a blob URL for a sample PDF (in a real app, this would be the split PDF)
+                const blob = new Blob(['This is a simulated PDF file'], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary link and trigger download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            function downloadAllFiles() {
+                // In a real application, this would create a ZIP file with all split PDFs
+                // For this demo, we'll simulate downloading a ZIP
+                
+                // Create a blob URL for a sample ZIP (in a real app, this would be the actual ZIP)
+                const blob = new Blob(['This is a simulated ZIP file containing all split PDFs'], { type: 'application/zip' });
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary link and trigger download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'split-pdfs.zip';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            function resetTool() {
+                // Reset all state
+                pdfFile = null;
+                totalPages = 0;
+                selectedPages = [];
+                splitFiles = [];
+                splitMode = 'range';
+                fileInput.value = '';
+                
+                // Update UI
+                splitBtn.disabled = true;
+                downloadAllBtn.classList.add('hidden');
+                progressSection.classList.add('hidden');
+                resultsSection.classList.add('hidden');
+                fileInfo.classList.add('hidden');
+                splitOptions.classList.add('hidden');
+                compressionSettings.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+                
+                // Reset split mode
+                setSplitMode('range');
+                
+                // Reset compression slider
+                compressionLevel.value = 85;
+                updateCompressionValue();
+            }
+            
+            function toggleMobileMenu() {
+                const nav = document.querySelector('nav');
+                nav.classList.toggle('hidden');
+                nav.classList.toggle('flex');
+                nav.classList.toggle('absolute');
+                nav.classList.toggle('top-16');
+                nav.classList.toggle('left-0');
+                nav.classList.toggle('right-0');
+                nav.classList.toggle('bg-white');
+                nav.classList.toggle('p-4');
+                nav.classList.toggle('flex-col');
+                nav.classList.toggle('space-y-4');
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) {
+                    return bytes + ' bytes';
+                } else if (bytes < 1048576) {
+                    return (bytes / 1024).toFixed(2) + ' KB';
+                } else {
+                    return (bytes / 1048576).toFixed(2) + ' MB';
+                }
+            }
+            
+            // Make functions available globally for onclick handlers
+            window.downloadSingleFile = downloadSingleFile;
+            
+            // Initialize compression value display
+            updateCompressionValue();
+        });
+    </script>
+</body>
+</html>
