@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Image Converter - Convert PDF to JPG, PNG Online | ToolHub</title>
+    <meta name="description" content="Free online tool to convert PDF pages to high-quality JPG or PNG images. Adjust compression settings and convert multiple pages at once.">
+    <meta name="keywords" content="PDF to image, PDF to JPG, PDF to PNG, convert PDF, online PDF tool">
+    <meta name="author" content="ToolHub">
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8738644987718589"
+     crossorigin="anonymous"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #06b6d4;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .file-drop-area {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .file-drop-area.active {
+            border-color: var(--primary);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.5s ease;
+        }
+        
+        .ad-container {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+        }
+        
+        .image-preview {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .image-preview:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quality-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .quality-high {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .quality-medium {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+        
+        .quality-low {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .page-checkbox:checked + .page-label {
+            background-color: #10b981;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <i data-lucide="layers" class="w-8 h-8 text-emerald-500"></i>
+                <span class="text-2xl font-bold gradient-text">ToolHub</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="text-gray-600 hover:text-emerald-500 font-medium transition">Home</a>
+                <a href="#features" class="text-gray-600 hover:text-emerald-500 font-medium transition">Features</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-emerald-500 font-medium transition">How It Works</a>
+                <a href="#faq" class="text-gray-600 hover:text-emerald-500 font-medium transition">FAQ</a>
+            </nav>
+            <button class="md:hidden text-gray-600">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content -->
+            <div class="lg:w-2/3">
+                <!-- Tool Header -->
+                <div class="text-center mb-10">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">PDF to Image Converter</h1>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">Convert PDF pages to high-quality JPG or PNG images. Adjust compression settings to optimize file size and quality.</p>
+                </div>
+
+                <!-- Ad Unit - Top -->
+                <div class="mb-8">
+                    <div class="ad-container">
+                        <!-- AdSense Ad Unit -->
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">728 x 90</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Container -->
+                <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <!-- File Upload Area -->
+                    <div id="uploadArea" class="file-drop-area border-2 border-dashed rounded-xl p-8 text-center cursor-pointer mb-6">
+                        <i data-lucide="upload" class="w-12 h-12 text-emerald-500 mx-auto mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Upload PDF File</h3>
+                        <p class="text-gray-600 mb-4">Drag & drop your PDF file here or click to browse</p>
+                        <p class="text-sm text-gray-500">Maximum file size: 10MB</p>
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf">
+                        <button id="uploadBtn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg mt-4 inline-flex items-center">
+                            <i data-lucide="folder-open" class="w-5 h-5 mr-2"></i>
+                            Select PDF File
+                        </button>
+                    </div>
+
+                    <!-- Conversion Settings -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Format Selection -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">Output Format</h3>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="format" value="jpg" class="mr-2 text-emerald-500" checked>
+                                    <span class="text-gray-700">JPG</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="format" value="png" class="mr-2 text-emerald-500">
+                                    <span class="text-gray-700">PNG</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Page Selection -->
+                        <div id="pageSelection" class="hidden">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">Pages to Convert</h3>
+                            <div class="flex flex-wrap gap-2" id="pagesContainer">
+                                <!-- Pages will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compression Settings -->
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-800">Compression Settings</h3>
+                            <span id="qualityLabel" class="quality-indicator quality-high">High Quality</span>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <label for="compressionLevel" class="text-gray-700 font-medium">Quality Level</label>
+                                <span id="compressionValue" class="text-emerald-600 font-semibold">85%</span>
+                            </div>
+                            <input type="range" id="compressionLevel" min="30" max="100" value="85" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Smaller File</span>
+                                <span>Balanced</span>
+                                <span>Better Quality</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div id="progressSection" class="mb-6 hidden">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-700 font-medium">Converting Pages</span>
+                            <span id="progressPercent" class="text-emerald-600 font-semibold">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button id="convertBtn" class="btn-primary text-white font-semibold py-3 px-6 rounded-lg flex-1 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <i data-lucide="image" class="w-5 h-5 mr-2"></i>
+                            Convert to Images
+                        </button>
+                        <button id="downloadAllBtn" class="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 px-6 rounded-lg flex-1 flex items-center justify-center hidden">
+                            <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+                            Download All Images
+                        </button>
+                        <button id="resetBtn" class="border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg">
+                            <i data-lucide="rotate-ccw" class="w-5 h-5 mr-2"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="bg-white rounded-xl shadow-md p-6 mb-8 hidden">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Converted Images</h2>
+                    <div id="imagesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Converted images will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <section id="features" class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Why Use Our PDF to Image Converter?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="zap" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Fast Conversion</h3>
+                                <p class="text-gray-600">Convert PDF pages to images quickly with our optimized processing engine.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="lock" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Secure & Private</h3>
+                                <p class="text-gray-600">Your files are processed in your browser and never uploaded to any server.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="settings" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Adjustable Quality</h3>
+                                <p class="text-gray-600">Control the balance between file size and image quality with our compression settings.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-emerald-100 p-3 rounded-lg">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-emerald-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">Works Everywhere</h3>
+                                <p class="text-gray-600">Use our tool on any device - desktop, tablet, or mobile.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- How It Works Section -->
+                <section id="how-it-works" class="bg-white rounded-xl shadow-md p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">How to Convert PDF to Images</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">1</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Upload PDF</h3>
+                            <p class="text-gray-600">Select the PDF file you want to convert from your device.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">2</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Choose Settings</h3>
+                            <p class="text-gray-600">Select output format, pages, and adjust quality settings.</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-emerald-700 font-bold">3</span>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Convert & Download</h3>
+                            <p class="text-gray-600">Click convert and download your images individually or as a ZIP.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section id="faq" class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+                    <div class="space-y-4">
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Is it free to convert PDF to images?</h3>
+                            <p class="text-gray-600">Yes, our PDF to image converter is completely free to use with no hidden costs or limitations.</p>
+                        </div>
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Are my files secure?</h3>
+                            <p class="text-gray-600">Absolutely. All file processing happens directly in your browser. Your files never leave your computer and are not stored on our servers.</p>
+                        </div>
+                        <div class="border-b border-gray-200 pb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">What is the maximum file size?</h3>
+                            <p class="text-gray-600">You can convert PDF files up to 10MB. For larger files, consider splitting them first.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Can I select specific pages to convert?</h3>
+                            <p class="text-gray-600">Yes, after uploading your PDF, you can select which pages to convert to images.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar with Ads -->
+            <div class="lg:w-1/3">
+                <!-- Ad Unit - Sidebar Top -->
+                <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+                    <div class="ad-container" style="min-height: 300px;">
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">300 x 250</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Tools -->
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">More PDF Tools</h3>
+                    <div class="space-y-4">
+                        <a href="/merge-pdf" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="merge" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">Merge PDF</span>
+                        </a>
+                        <a href="/split-pdf" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="scissors" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">Split PDF</span>
+                        </a>
+                        <a href="/compress-pdf" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="minimize" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">Compress PDF</span>
+                        </a>
+                        <a href="/pdf-to-word" class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-emerald-500 transition">
+                            <i data-lucide="file-text" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                            <span class="font-medium text-gray-800">PDF to Word</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ad Unit - Sidebar Bottom -->
+                <div class="bg-white rounded-xl shadow-md p-4">
+                    <div class="ad-container" style="min-height: 600px;">
+                        <div class="text-center text-gray-500">
+                            <i data-lucide="square-activity" class="w-12 h-12 mx-auto mb-2"></i>
+                            <p>Advertisement</p>
+                            <p class="text-sm">300 x 600</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="/" class="flex items-center space-x-2">
+                        <i data-lucide="layers" class="w-6 h-6 text-emerald-400"></i>
+                        <span class="text-xl font-bold text-white">ToolHub</span>
+                    </a>
+                    <p class="text-gray-400 mt-2">Your all-in-one solution for PDF and image tools</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">Terms</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 ToolHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Tool Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const uploadArea = document.getElementById('uploadArea');
+            const pageSelection = document.getElementById('pageSelection');
+            const pagesContainer = document.getElementById('pagesContainer');
+            const compressionLevel = document.getElementById('compressionLevel');
+            const compressionValue = document.getElementById('compressionValue');
+            const qualityLabel = document.getElementById('qualityLabel');
+            const convertBtn = document.getElementById('convertBtn');
+            const downloadAllBtn = document.getElementById('downloadAllBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const progressSection = document.getElementById('progressSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const resultsSection = document.getElementById('resultsSection');
+            const imagesContainer = document.getElementById('imagesContainer');
+            
+            // Store uploaded file and page data
+            let pdfFile = null;
+            let totalPages = 0;
+            let selectedPages = [];
+            let convertedImages = [];
+            
+            // Event Listeners
+            uploadBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            compressionLevel.addEventListener('input', updateCompressionValue);
+            convertBtn.addEventListener('click', convertToImages);
+            downloadAllBtn.addEventListener('click', downloadAllImages);
+            resetBtn.addEventListener('click', resetTool);
+            
+            // Functions
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('active');
+            }
+            
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('active');
+                
+                if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                    const files = e.dataTransfer.files;
+                    if (files[0].type === 'application/pdf') {
+                        processFile(files[0]);
+                    } else {
+                        alert('Please select a PDF file.');
+                    }
+                }
+            }
+            
+            function handleFileSelect(e) {
+                if (e.target.files && e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (file.type === 'application/pdf') {
+                        processFile(file);
+                    } else {
+                        alert('Please select a PDF file.');
+                    }
+                }
+            }
+            
+            function processFile(file) {
+                // Check file size
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('File exceeds the 10MB limit. Please select a smaller file.');
+                    return;
+                }
+                
+                pdfFile = file;
+                
+                // In a real application, you would use a PDF library to get page count
+                // For this demo, we'll simulate getting 5 pages
+                totalPages = 5;
+                selectedPages = Array.from({length: totalPages}, (_, i) => i + 1);
+                
+                // Update UI
+                updatePageSelection();
+                convertBtn.disabled = false;
+                
+                // Show page selection
+                pageSelection.classList.remove('hidden');
+                
+                // Update upload area text
+                uploadArea.querySelector('h3').textContent = 'PDF File Ready';
+                uploadArea.querySelector('p').textContent = `${file.name} (${formatFileSize(file.size)})`;
+            }
+            
+            function updatePageSelection() {
+                pagesContainer.innerHTML = '';
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageElement = document.createElement('div');
+                    pageElement.className = 'relative';
+                    pageElement.innerHTML = `
+                        <input type="checkbox" id="page-${i}" class="page-checkbox absolute opacity-0" checked>
+                        <label for="page-${i}" class="page-label block bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg cursor-pointer transition">
+                            Page ${i}
+                        </label>
+                    `;
+                    pagesContainer.appendChild(pageElement);
+                    
+                    // Add event listener
+                    const checkbox = pageElement.querySelector('input');
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            if (!selectedPages.includes(i)) selectedPages.push(i);
+                        } else {
+                            selectedPages = selectedPages.filter(page => page !== i);
+                        }
+                    });
+                }
+            }
+            
+            function updateCompressionValue() {
+                const value = parseInt(compressionLevel.value);
+                compressionValue.textContent = `${value}%`;
+                
+                // Update quality label
+                if (value >= 80) {
+                    qualityLabel.textContent = 'High Quality';
+                    qualityLabel.className = 'quality-indicator quality-high';
+                } else if (value >= 50) {
+                    qualityLabel.textContent = 'Medium Quality';
+                    qualityLabel.className = 'quality-indicator quality-medium';
+                } else {
+                    qualityLabel.textContent = 'Low Quality';
+                    qualityLabel.className = 'quality-indicator quality-low';
+                }
+            }
+            
+            function convertToImages() {
+                if (!pdfFile || selectedPages.length === 0) {
+                    alert('Please select a PDF file and at least one page to convert.');
+                    return;
+                }
+                
+                // Show progress bar
+                progressSection.classList.remove('hidden');
+                
+                // Reset results
+                convertedImages = [];
+                imagesContainer.innerHTML = '';
+                
+                // Simulate conversion (in a real app, this would use a PDF library)
+                let progress = 0;
+                const totalSteps = selectedPages.length;
+                let currentStep = 0;
+                
+                const interval = setInterval(() => {
+                    currentStep++;
+                    progress = Math.min(100, Math.round((currentStep / totalSteps) * 100));
+                    progressFill.style.width = `${progress}%`;
+                    progressPercent.textContent = `${progress}%`;
+                    
+                    // Simulate creating an image for each page
+                    if (currentStep <= totalSteps) {
+                        const pageNum = selectedPages[currentStep - 1];
+                        const format = document.querySelector('input[name="format"]:checked').value;
+                        const quality = parseInt(compressionLevel.value) / 100;
+                        
+                        // In a real app, this would convert the actual PDF page to an image
+                        // For this demo, we'll create a placeholder
+                        const imageData = {
+                            page: pageNum,
+                            format: format,
+                            url: `https://via.placeholder.com/600x800/10b981/ffffff?text=Page+${pageNum}`,
+                            size: Math.round((1 - quality) * 500 + 100) // Simulated file size based on quality
+                        };
+                        
+                        convertedImages.push(imageData);
+                        displayImage(imageData);
+                    }
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show download all button
+                        downloadAllBtn.classList.remove('hidden');
+                        
+                        // Show results section
+                        resultsSection.classList.remove('hidden');
+                        
+                        // Scroll to results
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Show success message
+                        setTimeout(() => {
+                            alert(`Successfully converted ${convertedImages.length} pages to images!`);
+                        }, 500);
+                    }
+                }, 500);
+            }
+            
+            function displayImage(imageData) {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'bg-gray-50 rounded-lg overflow-hidden';
+                imageElement.innerHTML = `
+                    <div class="relative">
+                        <img src="${imageData.url}" alt="Page ${imageData.page}" class="image-preview w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                            Page ${imageData.page}
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">${imageData.format.toUpperCase()}</span>
+                            <span class="text-sm font-medium">${formatFileSize(imageData.size * 1024)}</span>
+                        </div>
+                        <button class="download-single-btn w-full bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium py-2 px-4 rounded flex items-center justify-center" data-page="${imageData.page}">
+                            <i data-lucide="download" class="w-4 h-4 mr-1"></i>
+                            Download
+                        </button>
+                    </div>
+                `;
+                imagesContainer.appendChild(imageElement);
+                
+                // Add event listener to download button
+                const downloadBtn = imageElement.querySelector('.download-single-btn');
+                downloadBtn.addEventListener('click', function() {
+                    downloadSingleImage(imageData.page);
+                });
+                
+                // Reinitialize icons
+                lucide.createIcons();
+            }
+            
+            function downloadSingleImage(page) {
+                // In a real application, this would download the actual converted image
+                // For this demo, we'll simulate the download
+                
+                const imageData = convertedImages.find(img => img.page === page);
+                if (!imageData) return;
+                
+                // Create a blob URL for a sample image (in a real app, this would be the converted image)
+                const blob = new Blob(['This is a simulated image file'], { type: `image/${imageData.format}` });
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary link and trigger download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `page-${page}.${imageData.format}`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            function downloadAllImages() {
+                // In a real application, this would create a ZIP file with all images
+                // For this demo, we'll simulate downloading a ZIP
+                
+                // Create a blob URL for a sample ZIP (in a real app, this would be the actual ZIP)
+                const blob = new Blob(['This is a simulated ZIP file containing all converted images'], { type: 'application/zip' });
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary link and trigger download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'converted-images.zip';
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            function resetTool() {
+                // Reset all state
+                pdfFile = null;
+                totalPages = 0;
+                selectedPages = [];
+                convertedImages = [];
+                fileInput.value = '';
+                
+                // Update UI
+                convertBtn.disabled = true;
+                downloadAllBtn.classList.add('hidden');
+                progressSection.classList.add('hidden');
+                resultsSection.classList.add('hidden');
+                pageSelection.classList.add('hidden');
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+                
+                // Reset upload area text
+                uploadArea.querySelector('h3').textContent = 'Upload PDF File';
+                uploadArea.querySelector('p').textContent = 'Drag & drop your PDF file here or click to browse';
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) {
+                    return bytes + ' bytes';
+                } else if (bytes < 1048576) {
+                    return (bytes / 1024).toFixed(2) + ' KB';
+                } else {
+                    return (bytes / 1048576).toFixed(2) + ' MB';
+                }
+            }
+            
+            // Initialize compression value display
+            updateCompressionValue();
+        });
+    </script>
+</body>
+</html>
